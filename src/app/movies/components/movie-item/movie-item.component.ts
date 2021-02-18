@@ -13,4 +13,13 @@ export class MovieItemComponent {
     'The surviving Resistance faces the First Order once more in the final chapter of the Skywalker saga.';
   public poster =
     'https://images-na.ssl-images-amazon.com/images/I/91rKEgY1qDL._SY679_@@._V1_SX300.jpg';
+  public movieComment = '';
+
+  public wordCount(comment: string): number {
+    if (!comment || comment.length === 0) {
+      return 0;
+    } else {
+      return comment.trim().replace(/  +/g, ' ').split(' ').length;
+    }
+  }
 }
