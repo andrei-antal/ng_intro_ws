@@ -1,4 +1,4 @@
-<div class="card mb-4" *ngFor="let movie of movies; trackBy: trackByFn">
+<div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title font-weight-bold">
       {{ movie.title }}
@@ -15,7 +15,7 @@
       <div class="col-8 card-text">{{ movie.plot }}</div>
     </div>
     <ng-container
-      *ngIf="!movie.commentSaved; then editableContent; else readonlyComment"
+      *ngIf="!commentSaved; then editableContent; else readonlyComment"
     ></ng-container>
     <ng-template #editableContent>
       <textarea
@@ -39,8 +39,8 @@
       [disabled]="movie.comment.trim().length === 0"
       class="btn btn-outline-success mr-2"
     >
-      <i class="fas" [ngClass]="movie.commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
-      {{ movie.commentSaved ? "Edit" : "Save" }} comment
+      <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
+      {{ commentSaved ? "Edit" : "Save" }} comment
     </button>
     <button
       (click)="clearComment(movie.id)"
