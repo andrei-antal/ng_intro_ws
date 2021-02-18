@@ -14,17 +14,33 @@
       />
       <div class="col-8 card-text">{{ plot }}</div>
     </div>
-    <div>
+    <div [hidden]="commentSaved">
       <textarea
         [(ngModel)]="movieComment"
         class="mb-1 w-100"
         placeholder="Comment"
       ></textarea>
-      <div>{{ wordCount(movieComment) }} words</div>
+      <div
+        [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
+      >
+        {{ wordCount(movieComment) }} words
+      </div>
+    </div>
+    <div [hidden]="!commentSaved">
+      <label class="font-weight-bold"> Comment: </label>
+      <p>{{ movieComment }}</p>
     </div>
     <hr />
     <button
-      (click)="movieComment = ''"
+      (click)="saveComment()"
+      [disabled]="movieComment.trim().length === 0"
+      class="btn btn-outline-success mr-2"
+    >
+      <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
+      {{ commentSaved ? "Edit" : "Save" }} comment
+    </button>
+    <button
+      (click)="clearComment()"
       [disabled]="movieComment === ''"
       class="btn btn-outline-warning mr-2"
     >

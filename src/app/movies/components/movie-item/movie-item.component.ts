@@ -14,6 +14,7 @@ export class MovieItemComponent {
   public poster =
     'https://images-na.ssl-images-amazon.com/images/I/91rKEgY1qDL._SY679_@@._V1_SX300.jpg';
   public movieComment = '';
+  public commentSaved = false;
 
   public wordCount(comment: string): number {
     if (!comment || comment.length === 0) {
@@ -21,5 +22,14 @@ export class MovieItemComponent {
     } else {
       return comment.trim().replace(/  +/g, ' ').split(' ').length;
     }
+  }
+
+  public saveComment(): void {
+    this.commentSaved = !this.commentSaved;
+  }
+
+  public clearComment(): void {
+    this.commentSaved = false;
+    this.movieComment = '';
   }
 }
