@@ -1,4 +1,5 @@
 <ngm-movie-item
   *ngFor="let movie of movies; trackBy: trackByFn"
   [movie]="movie"
+  (commentUpdate)="handleCommentUpdate($event)"
 ></ngm-movie-item>

@@ -19,32 +19,32 @@
     ></ng-container>
     <ng-template #editableContent>
       <textarea
-        [(ngModel)]="movie.comment"
+        [(ngModel)]="movieComment"
         class="mb-1 w-100"
         placeholder="Comment"
       ></textarea>
       <div
-        [style.color]="movie.comment.trim().length === 0 ? 'darkred' : 'darkgreen'"
+        [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
       >
-        {{ wordCount(movie.comment) }} words
+        {{ wordCount(movieComment) }} words
       </div>
     </ng-template>
     <ng-template #readonlyComment>
       <label class="font-weight-bold"> Comment: </label>
-      <p>{{ movie.comment }}</p>
+      <p>{{ movieComment }}</p>
     </ng-template>
     <hr />
     <button
-      (click)="saveComment(movie.id)"
-      [disabled]="movie.comment.trim().length === 0"
+      (click)="saveComment()"
+      [disabled]="movieComment.trim().length === 0"
       class="btn btn-outline-success mr-2"
     >
       <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
       {{ commentSaved ? "Edit" : "Save" }} comment
     </button>
     <button
-      (click)="clearComment(movie.id)"
-      [disabled]="movie.comment === ''"
+      (click)="clearComment()"
+      [disabled]="movieComment === ''"
       class="btn btn-outline-warning mr-2"
     >
       <i class="fas fa-ban"></i>
