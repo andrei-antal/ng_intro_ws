@@ -1,50 +1,50 @@
-<div class="card mb-4">
+<div class="card mb-4" *ngFor="let movie of movies; trackBy: trackByFn">
   <div class="card-body">
     <h5 class="card-title font-weight-bold">
-      {{ title }}
-      <h6 class="movie-year font-weight-normal">({{ year }})</h6>
+      {{ movie.title }}
+      <h6 class="movie-year font-weight-normal">({{ movie.year }})</h6>
     </h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ genre }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">{{ movie.genre }}</h6>
     <hr />
     <div class="row no-gutters mb-4">
       <img
-        src="{{ poster }}"
+        src="{{ movie.poster }}"
         class="col-4 w-100 h-100 pr-4"
         alt="movie poster"
       />
-      <div class="col-8 card-text">{{ plot }}</div>
+      <div class="col-8 card-text">{{ movie.plot }}</div>
     </div>
     <ng-container
-      *ngIf="!commentSaved; then editableContent; else readonlyComment"
+      *ngIf="!movie.commentSaved; then editableContent; else readonlyComment"
     ></ng-container>
     <ng-template #editableContent>
       <textarea
-        [(ngModel)]="movieComment"
+        [(ngModel)]="movie.comment"
         class="mb-1 w-100"
         placeholder="Comment"
       ></textarea>
       <div
-        [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
+        [style.color]="movie.comment.trim().length === 0 ? 'darkred' : 'darkgreen'"
       >
-        {{ wordCount(movieComment) }} words
+        {{ wordCount(movie.comment) }} words
       </div>
     </ng-template>
     <ng-template #readonlyComment>
       <label class="font-weight-bold"> Comment: </label>
-      <p>{{ movieComment }}</p>
+      <p>{{ movie.comment }}</p>
     </ng-template>
     <hr />
     <button
-      (click)="saveComment()"
-      [disabled]="movieComment.trim().length === 0"
+      (click)="saveComment(movie.id)"
+      [disabled]="movie.comment.trim().length === 0"
       class="btn btn-outline-success mr-2"
     >
-      <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
-      {{ commentSaved ? "Edit" : "Save" }} comment
+      <i class="fas" [ngClass]="movie.commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
+      {{ movie.commentSaved ? "Edit" : "Save" }} comment
     </button>
     <button
-      (click)="clearComment()"
-      [disabled]="movieComment === ''"
+      (click)="clearComment(movie.id)"
+      [disabled]="movie.comment === ''"
       class="btn btn-outline-warning mr-2"
     >
       <i class="fas fa-ban"></i>
