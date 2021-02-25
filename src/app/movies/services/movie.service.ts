@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { List } from 'immutable';
 import { Movie, MOVIES_LIST } from '../model/movie';
 
@@ -6,21 +9,24 @@ import { Movie, MOVIES_LIST } from '../model/movie';
   providedIn: 'root',
 })
 export class MovieService {
-  private moviesList: List<Movie> = List(MOVIES_LIST);
+  private movies: BehaviorSubject<List<Movie>> = new BehaviorSubject(
+    List(MOVIES_LIST)
+  );
+  public readonly movies$: Observable<
+    Movie[]
+  > = this.movies.asObservable().pipe(map((list) => list.toArray()));
 
   constructor() {}
 
-  get movies(): Movie[] {
-    return this.moviesList.toArray();
-  }
-
   updateComment(movieId: string, newComment: string) {
-    const index = this.moviesList.findIndex((movie) => movie.id === movieId);
-    this.moviesList = this.moviesList.setIn([index, 'comment'], newComment);
+    const moviesList = this.movies.getValue();
+    const index = moviesList.findIndex((movie) => movie.id === movieId);
+    this.movies.next(moviesList.setIn([index, 'comment'], newComment));
   }
 
   deleteMovie(movieId: string) {
-    const index = this.moviesList.findIndex((movie) => movie.id === movieId);
-    this.moviesList = this.moviesList.delete(index);
+    const moviesList = this.movies.getValue();
+    const index = moviesList.findIndex((movie) => movie.id === movieId);
+    this.movies.next(moviesList.delete(index));
   }
 }
