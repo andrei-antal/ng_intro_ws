@@ -15,9 +15,9 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-  getMovies(): void {
+  getMovies(searchTerm = ''): void {
     this.http
-      .get<Movie[]>(this.apiUrl)
+      .get<Movie[]>(`${this.apiUrl}?q=${searchTerm.trim()}`)
       .subscribe((data) => this.movies.next(data));
   }
 
