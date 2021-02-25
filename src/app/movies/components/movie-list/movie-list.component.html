@@ -1,9 +1,16 @@
 <div class="py-4">
   <input placeholder="Search movies" #searchField />
 </div>
-<ngm-movie-item
-  *ngFor="let movie of movies$ | async; trackBy: trackByFn"
-  [movie]="movie"
-  (commentUpdate)="handleCommentUpdate($event)"
-  (movieDelete)="handleMovieDelete($event)"
-></ngm-movie-item>
+<ng-container *ngIf="movies$ | async as movies">
+  <div *ngIf="movies.length; else empty">
+    <ngm-movie-item
+      *ngFor="let movie of movies; trackBy: trackByFn"
+      [movie]="movie"
+      (commentUpdate)="handleCommentUpdate($event)"
+      (movieDelete)="handleMovieDelete($event)"
+    ></ngm-movie-item>
+  </div>
+  <ng-template #empty>
+    <i class="far fa-window-close"></i> No movies found
+  </ng-template>
+</ng-container>
