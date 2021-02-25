@@ -1,32 +1,35 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-import { List } from 'immutable';
-import { Movie, MOVIES_LIST } from '../model/movie';
+import { Movie } from '../model/movie';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  private movies: BehaviorSubject<List<Movie>> = new BehaviorSubject(
-    List(MOVIES_LIST)
-  );
-  public readonly movies$: Observable<
-    Movie[]
-  > = this.movies.asObservable().pipe(map((list) => list.toArray()));
+  private movies: Subject<Movie[]> = new Subject();
+  private apiUrl = 'http://localhost:3000/movies';
+  public readonly movies$: Observable<Movie[]> = this.movies.asObservable();
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  updateComment(movieId: string, newComment: string) {
-    const moviesList = this.movies.getValue();
-    const index = moviesList.findIndex((movie) => movie.id === movieId);
-    this.movies.next(moviesList.setIn([index, 'comment'], newComment));
+  getMovies(): void {
+    this.http
+      .get<Movie[]>(this.apiUrl)
+      .subscribe((data) => this.movies.next(data));
   }
 
-  deleteMovie(movieId: string) {
-    const moviesList = this.movies.getValue();
-    const index = moviesList.findIndex((movie) => movie.id === movieId);
-    this.movies.next(moviesList.delete(index));
+  updateComment(movieId: string, newComment: string): Observable<Movie> {
+    return this.http
+      .patch<Movie>(`${this.apiUrl}/${movieId}`, { comment: newComment })
+      .pipe(tap(() => this.getMovies()));
+  }
+
+  deleteMovie(movieId: string): Observable<any> {
+    return this.http
+      .delete(`${this.apiUrl}/${movieId}`)
+      .pipe(tap(() => this.getMovies()));
   }
 }

@@ -17,17 +17,17 @@ export class MovieListComponent implements OnInit {
 
   public ngOnInit(): void {
     this.movies$ = this.movieService.movies$;
+    this.movieService.getMovies();
   }
 
   public handleCommentUpdate(commentPayload: CommentUpdate): void {
-    this.movieService.updateComment(
-      commentPayload.id,
-      commentPayload.newComment
-    );
+    this.movieService
+      .updateComment(commentPayload.id, commentPayload.newComment)
+      .subscribe();
   }
 
   public handleMovieDelete(movieId: string): void {
-    this.movieService.deleteMovie(movieId);
+    this.movieService.deleteMovie(movieId).subscribe();
   }
 
   public trackByFn(_: any, movie: Movie): string {
