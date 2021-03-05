@@ -11,9 +11,18 @@ import { HomeComponent } from './home/home.component';
   declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
-    MoviesModule,
     HttpClientModule,
-    RouterModule.forRoot([{ path: '', component: HomeComponent }]),
+    RouterModule.forRoot([
+      {
+        path: '',
+        component: HomeComponent,
+      },
+      {
+        path: 'movies',
+        loadChildren: () =>
+          import('./movies/movies.module').then((m) => m.MoviesModule),
+      },
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],
