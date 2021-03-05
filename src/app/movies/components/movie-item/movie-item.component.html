@@ -50,6 +50,10 @@
       <i class="fas fa-ban"></i>
       Clear comment
     </button>
+    <a [routerLink]="['/movies', movie.id]" class="btn btn-primary mr-2">
+      <i class="fas fa-edit"></i>
+      Edit
+    </a>
     <button (click)="movieDelete.emit(movie.id)" class="btn btn-danger mr-2">
       <i class="fas fa-trash"></i>
       Delete

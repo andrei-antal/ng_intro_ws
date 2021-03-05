@@ -1,9 +1,11 @@
 <nav class="navbar navbar-dark bg-dark">
-  <h1 class="navbar-brand">
-    <i class="fas fa-film mr-1"></i>
-    NgMovies
-  </h1>
+  <a routerLink="/">
+    <h1 class="navbar-brand">
+      <i class="fas fa-film mr-1"></i>
+      NgMovies
+    </h1>
+  </a>
 </nav>
 <main class="p-3">
-  <ngm-movie-list></ngm-movie-list>
+  <router-outlet></router-outlet>
 </main>

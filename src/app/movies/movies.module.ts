@@ -3,10 +3,20 @@ import { CommonModule } from '@angular/common';
 import { MovieItemComponent } from './components/movie-item/movie-item.component';
 import { FormsModule } from '@angular/forms';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
+import { MovieDetailComponent } from '../movies/components/movie-detail/movie-detail.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [MovieItemComponent, MovieListComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild([
+      { path: 'movies', component: MovieListComponent },
+      { path: 'movies/new', component: MovieDetailComponent },
+      { path: 'movies/:id', component: MovieDetailComponent },
+    ]),
+  ],
+  declarations: [MovieItemComponent, MovieListComponent, MovieDetailComponent],
   exports: [MovieListComponent],
 })
 export class MoviesModule {}

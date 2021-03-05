@@ -15,6 +15,10 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
+  getMovie(movieId: string): Observable<Movie> {
+    return this.http.get<Movie>(`${this.apiUrl}/${movieId}`);
+  }
+
   getMovies(searchTerm = ''): void {
     this.http
       .get<Movie[]>(`${this.apiUrl}?q=${searchTerm.trim()}`)
