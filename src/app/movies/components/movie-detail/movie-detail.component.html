@@ -1,7 +1,7 @@
 <a [routerLink]="['/movies']" class="btn btn-outline-secondary mb-3">Back</a>
 <br>
 <ng-container *ngIf="movie$ | async as movie; else newMovie">
-  <ngm-movie-item [movie]="movie"></ngm-movie-item>
+  <ngm-movie-item [movie]="movie" [editable]="false"></ngm-movie-item>
 </ng-container>
 <ng-template #newMovie>
   New movie

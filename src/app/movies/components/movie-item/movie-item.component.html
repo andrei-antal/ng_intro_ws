@@ -14,49 +14,51 @@
       />
       <div class="col-8 card-text">{{ movie.plot }}</div>
     </div>
-    <ng-container
-      *ngIf="!commentSaved; then editableContent; else readonlyComment"
-    ></ng-container>
-    <ng-template #editableContent>
-      <textarea
-        [(ngModel)]="movieComment"
-        class="mb-1 w-100"
-        placeholder="Comment"
-      ></textarea>
-      <div
-        [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
+    <ng-container *ngIf="editable">
+      <ng-container
+        *ngIf="!commentSaved; then editableContent; else readonlyComment"
+      ></ng-container>
+      <ng-template #editableContent>
+        <textarea
+          [(ngModel)]="movieComment"
+          class="mb-1 w-100"
+          placeholder="Comment"
+        ></textarea>
+        <div
+          [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
+        >
+          {{ wordCount(movieComment) }} words
+        </div>
+      </ng-template>
+      <ng-template #readonlyComment>
+        <label class="font-weight-bold"> Comment: </label>
+        <p>{{ movieComment }}</p>
+      </ng-template>
+      <hr />
+      <button
+        (click)="saveComment()"
+        [disabled]="movieComment.trim().length === 0"
+        class="btn btn-outline-success mr-2"
       >
-        {{ wordCount(movieComment) }} words
-      </div>
-    </ng-template>
-    <ng-template #readonlyComment>
-      <label class="font-weight-bold"> Comment: </label>
-      <p>{{ movieComment }}</p>
-    </ng-template>
-    <hr />
-    <button
-      (click)="saveComment()"
-      [disabled]="movieComment.trim().length === 0"
-      class="btn btn-outline-success mr-2"
-    >
-      <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
-      {{ commentSaved ? "Edit" : "Save" }} comment
-    </button>
-    <button
-      (click)="clearComment()"
-      [disabled]="movieComment === ''"
-      class="btn btn-outline-warning mr-2"
-    >
-      <i class="fas fa-ban"></i>
-      Clear comment
-    </button>
-    <a [routerLink]="['/movies', movie.id]" class="btn btn-primary mr-2">
-      <i class="fas fa-edit"></i>
-      Edit
-    </a>
-    <button (click)="movieDelete.emit(movie.id)" class="btn btn-danger mr-2">
-      <i class="fas fa-trash"></i>
-      Delete
-    </button>
+        <i class="fas" [ngClass]="commentSaved ? 'fa-pencil-alt' : 'fa-check'"></i>
+        {{ commentSaved ? "Edit" : "Save" }} comment
+      </button>
+      <button
+        (click)="clearComment()"
+        [disabled]="movieComment === ''"
+        class="btn btn-outline-warning mr-2"
+      >
+        <i class="fas fa-ban"></i>
+        Clear comment
+      </button>
+      <a [routerLink]="['/movies', movie.id]" class="btn btn-primary mr-2">
+        <i class="fas fa-edit"></i>
+        Edit
+      </a>
+      <button (click)="movieDelete.emit(movie.id)" class="btn btn-danger mr-2">
+        <i class="fas fa-trash"></i>
+        Delete
+      </button>
+    </ng-container>
   </div>
 </div>
