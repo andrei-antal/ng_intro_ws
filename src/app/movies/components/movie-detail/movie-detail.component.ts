@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { Movie } from '../../model/movie';
+import { MoviesValidatorsService } from '../../services/movies-validators.service';
 
 @Component({
   selector: 'ngm-movie-detail',
@@ -12,10 +13,13 @@ import { Movie } from '../../model/movie';
 })
 export class MovieDetailComponent implements OnInit {
   public movieForm: FormGroup = this.fb.group({
-    title: this.fb.control(''),
-    genre: this.fb.control(''),
-    year: this.fb.control(''),
-    plot: this.fb.control(''),
+    title: this.fb.control('', Validators.required),
+    genre: this.fb.control('', [
+      Validators.required,
+      this.movieValidators.genre,
+    ]),
+    year: this.fb.control('', Validators.required),
+    plot: this.fb.control('', Validators.required),
     poster: this.fb.control(''),
   });
   private movieId: string;
@@ -25,7 +29,8 @@ export class MovieDetailComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private router: Router
+    private router: Router,
+    private movieValidators: MoviesValidatorsService
   ) {}
 
   ngOnInit(): void {
