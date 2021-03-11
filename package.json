@@ -25,6 +25,7 @@
     "immutable": "^4.0.0-rc.12",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {

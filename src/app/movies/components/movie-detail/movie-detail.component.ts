@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { Observable } from 'rxjs';
-import { map, switchMap, filter } from 'rxjs/operators';
-
-import { Movie } from '../../model/movie';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
+import { map, tap, switchMap } from 'rxjs/operators';
+import { Movie } from '../../model/movie';
 
 @Component({
   selector: 'ngm-movie-detail',
@@ -13,18 +11,53 @@ import { MovieService } from '../../services/movie.service';
   styleUrls: ['./movie-detail.component.scss'],
 })
 export class MovieDetailComponent implements OnInit {
-  public movie$: Observable<Movie>;
+  public movieForm: FormGroup = this.fb.group({
+    title: this.fb.control(''),
+    genre: this.fb.control(''),
+    year: this.fb.control(''),
+    plot: this.fb.control(''),
+    poster: this.fb.control(''),
+  });
+  private movieId: string;
+  private movie: Movie;
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.movie$ = this.route.paramMap.pipe(
-      map((paramsMap) => paramsMap.get('id')),
-      filter((id) => !!id),
-      switchMap((movieId) => this.movieService.getMovie(movieId))
-    );
+    this.route.paramMap
+      .pipe(
+        map((paramsMap): string => paramsMap.get('id')),
+        tap((movieId) => (this.movieId = movieId)),
+        switchMap((movieId) =>
+          this.movieService
+            .getMovie(movieId)
+            .pipe(tap((movie) => (this.movie = movie)))
+        )
+      )
+      .subscribe((movie) => {
+        this.movieForm.patchValue(movie);
+      });
   }
+
+  onSubmit(): void {
+    const { value } = this.movieForm;
+    const modifiedMovie = {
+      ...this.movie,
+      ...value,
+    };
+    if (!this.movieId) {
+      this.movieService.createMovie(modifiedMovie).subscribe(this.goBack);
+    } else {
+      this.movieService.updateMovie(modifiedMovie).subscribe(this.goBack);
+    }
+  }
+
+  goBack = () => {
+    this.router.navigate(['/movies']);
+  };
 }
