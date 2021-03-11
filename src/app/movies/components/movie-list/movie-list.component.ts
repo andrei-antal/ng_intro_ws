@@ -27,7 +27,7 @@ export class MovieListComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
     this.movies$ = this.movieService.movies$;
     this.searchField.valueChanges
-      .pipe(debounceTime(300), startWith(''), takeUntil(this.destroy$))
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
       .subscribe((searchTerm) => this.movieService.getMovies(searchTerm));
   }
 

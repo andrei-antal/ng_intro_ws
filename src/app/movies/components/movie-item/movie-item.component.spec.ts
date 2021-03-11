@@ -101,7 +101,6 @@ describe('MovieItemComponent', () => {
       '[data-testId=save-comment]'
     );
     commentElement = movieItemElement.querySelector('[data-testId=comment]');
-    console.log(saveCommentBtn, commentElement);
 
     spyOn(component, 'update');
 
