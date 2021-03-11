@@ -1,4 +1,4 @@
-<div class="card mb-4">
+<div class="card mb-4" *ngIf="movie">
   <div class="card-body">
     <h5 class="card-title font-weight-bold">
       {{ movie.title }}
@@ -27,7 +27,7 @@
         <div
           [style.color]="movieComment.trim().length === 0 ? 'darkred' : 'darkgreen'"
         >
-          {{ wordCount(movieComment) }} words
+          {{ movieComment | wordCount}}
         </div>
       </ng-template>
       <ng-template #readonlyComment>
