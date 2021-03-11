@@ -38,6 +38,10 @@ export class MovieService {
       .subscribe((data) => this.movies.next(data));
   }
 
+  getGenres(): Observable<string[]> {
+    return this.http.get<string[]>(`http://localhost:3000/genres`);
+  }
+
   createMovie(movie: Movie): Observable<any> {
     return this.http.post(`${this.apiUrl}`, movie);
   }
